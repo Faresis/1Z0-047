@@ -1,0 +1,1 @@
+SELECT * FROM nls_session_parameters;
