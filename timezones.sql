@@ -1,0 +1,1 @@
+select DBTIMEZONE, SESSIONTIMEZONE from dual;
