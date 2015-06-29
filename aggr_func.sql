@@ -5,6 +5,9 @@ select count(empty_col) from empty_tbl;
 select count(last_name), count(distinct last_name), count(all last_name) from employees;
 select * from employees order by last_name;
 select last_name, count(last_name) over () from employees;
+select count(project_cost) from projects group by days order by days;
+select count(project_cost) from projects order by days;
+
 
 /* sum */
 select * from ships;
@@ -35,6 +38,12 @@ select * from projects;
 select max(project_cost) keep (dense_rank first order by days),
        min(project_cost) keep (dense_rank first order by days),
        avg(project_cost) keep (dense_rank first order by days) from projects;
+       
+select max(project_cost),
+       min(project_cost),
+       avg(project_cost) from projects
+       group by days
+       order by days;
        
 select max(project_cost),
        min(project_cost),
