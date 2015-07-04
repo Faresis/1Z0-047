@@ -15,6 +15,8 @@ select sum(capacity), sum(length(ship_name)) from ships;
 
 /* min, max */
 select min(last_name), max(last_name) from employees;
+-- ignore null values
+select max(capacity), min(capacity) from ships;
 
 /* avg */
 select * from ships;

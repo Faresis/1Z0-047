@@ -67,7 +67,15 @@ SELECT avg(MAX(SQ_FT)) FROM SHIP_CABINS WHERE SHIP_ID = 1 GROUP BY ROOM_STYLE, R
 SELECT avg(SQ_FT) FROM SHIP_CABINS WHERE SHIP_ID = 1;
 SELECT COUNT(AVG(MAX(SQ_FT))) FROM SHIP_CABINS WHERE SHIP_ID = 1 GROUP BY ROOM_STYLE, ROOM_TYPE;
 SELECT round(AVG(MAX(SQ_FT))) FROM SHIP_CABINS WHERE SHIP_ID = 1 GROUP BY ROOM_STYLE, ROOM_TYPE;
+-- group functions are not allowed in group by clause
+select max(sq_ft) from ship_cabins group by max(sq_ft);
+-- scalar functiona are allowed in group by clause
+select to_char(sq_ft, '999,999.99') from ship_cabins group by to_char(sq_ft, '999,999.99');
 
-
-
-
+/* having */
+SELECT ROOM_STYLE, ROOM_TYPE, TO_CHAR(MIN(SQ_FT),'9,999') "Min"
+FROM SHIP_CABINS
+WHERE SHIP_ID = 1
+GROUP BY ROOM_STYLE, ROOM_TYPE
+HAVING ROOM_TYPE IN ('Standard', 'Large') OR MIN(SQ_FT) > 1200
+ORDER BY 3;
