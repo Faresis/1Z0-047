@@ -5,10 +5,11 @@ select * from user_tables;
 select * from user_col_comments;
 
 /* list all user constraints */
-select * from user_cons_columns where table_name='SHIPS';
+select * from user_cons_columns where table_name='EMPLOYEES';
 
 /* list constraint details  */
 select * from user_constraints where constraint_name = 'SHIPS_PORTS_FK';
+select * from user_constraints where constraint_name = 'SYS_C007044';
 select * from user_constraints where constraint_name = 'SHIP_PK';
 
 /* tables accesible to the current user */
