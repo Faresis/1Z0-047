@@ -134,3 +134,9 @@ select * from positions;
 select main.position_id, main.position, boss.position boss
 from positions main left join positions boss on main.reports_to = boss.position_id
 order by 1;
+
+/* cartesian product */
+select * from vendors;
+select * from positions;
+select * from vendors, positions;
+select * from vendors cross join positions;
