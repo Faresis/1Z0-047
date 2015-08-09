@@ -41,3 +41,7 @@ select table_name, index_name
 from user_indexes
 where table_name = 'SHIPS';
 select * from ships;
+
+/* synonyms */
+create synonym shp for ships;
+select * from shp;
