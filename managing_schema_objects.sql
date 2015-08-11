@@ -241,3 +241,20 @@ charge number not null
 create index ix_func_based_invoice on invoices(round(charge));
 select * from invoices where round(charge) > 0;
 --  create and use function based index
+
+/* flashback operations */
+/* recover to before drop state */
+create table houdini ( volia varchar2(30) );
+insert into houdini (volia) values ('Now you see it.');
+commit;
+select * from houdini;
+drop table houdini;
+select * from houdini;
+flashback table houdini to before drop;
+select * from houdini;
+flashback table houdini to before drop rename to houdini2;
+-- this will cause an error because object has been already recovered
+drop table houdini;
+flashback table houdini to before drop rename to houdini2;
+select * from houdini;
+select * from houdini2;
