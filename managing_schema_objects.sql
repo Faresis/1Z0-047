@@ -258,3 +258,69 @@ drop table houdini;
 flashback table houdini to before drop rename to houdini2;
 select * from houdini;
 select * from houdini2;
+
+/* recyclebin */
+select * from user_recyclebin;
+select * from recyclebin;
+purge table "ports";
+
+/* flashback to timestamp */
+select * from houdini2;
+delete houdini2;
+flashback table houdini to timestamp systimestamp - interval '0 00:00:20' day to second;
+select * from v$version;
+select * from v$option where parameter = 'Flashback Table';
+
+/* SCN */
+SELECT DBMS_FLASHBACK.GET_SYSTEM_CHANGE_NUMBER FROM DUAL;
+select current_scn from v$database;
+
+select ora_rowscn, volia from houdini2;
+
+/* timestamp */
+SELECT TO_TIMESTAMP('2009-08-25 13:15:08.232349', 'RRRR-MM-DD HH24:MI:SS:FF') FROM DUAL;
+
+/* conversion */
+select scn_to_timestamp(480865) from dual;
+select timestamp_to_scn(scn_to_timestamp(480865)) from dual;
+
+/* restore point */
+create restore point morning;
+flashback table houdini2 to restore point morning;
+drop restore point morning;
+
+/* external tables */
+create or replace directory db_files as '/exam/1Z-047';
+drop table invoices_external;
+create table invoices_external (
+  invoice_id char(3),
+  invoice_date char(9),
+  account_number char(12)
+)
+organization external
+( type oracle_loader
+    default directory db_files
+    access parameters
+    ( records delimited by newline
+      skip 2
+      BADFILE db_files:'INV.BAD'
+      LOGFILE db_files:'INV.LOG'
+      fields (invoice_id char(3),
+              invoice_date char(9),
+              account_number char(12))
+    )
+    location('external_table.txt')
+);
+/*
+external_table.txt content
+
+ID  INV_DATE    ACCT_NO
+___ ___________ ______________
+701 03/15/09    CODDA009
+702 03/07/09    CODDA010
+703 03/18/09    CODDA011
+*/
+select * from invoices_external;
+SELECT TO_NUMBER(INVOICE_ID), TO_DATE(INVOICE_DATE,'MM/DD/RR') INVOICE_DATE, LTRIM(ACCOUNT_NUMBER,' ') ACCOUNT_NUMBER
+FROM
+INVOICES_EXTERNAL;
