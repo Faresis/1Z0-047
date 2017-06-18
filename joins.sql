@@ -23,6 +23,11 @@ order by ship_id;
 
 select ship_id, ship_name, port_name
 from ships 
+inner join ports on home_port_id = port_id and ship_id > 5
+order by ship_id;
+
+select ship_id, ship_name, port_name
+from ships 
 join ports on home_port_id = port_id
 order by ship_id;
 
@@ -74,6 +79,9 @@ update employees set adress_id = employee_id;
 select adress_id, employees.employee_id, employees.last_name, adresses.street_adress
 from employees natural join adresses;
 
+select adress_id, employee_id, last_name, street_adress
+from employees natural join adresses;
+
 select employees.adress_id, employees.employee_id, employees.last_name, adresses.street_adress
 from employees natural join adresses;
 
@@ -81,7 +89,20 @@ from employees natural join adresses;
 update employees set adress_id = '' where adress_id in (4,5);
 
 select adress_id, employee_id, last_name, street_adress
+from employees join adresses
+using (adress_id);
+
+select adress_id, employee_id, last_name, street_adress
 from employees left join adresses
+using (adress_id);
+
+select adress_id, employee_id, last_name, street_adress
+from employees right join adresses
+using (adress_id);
+
+/* ee.adress_id is not allowed */
+select ee.adress_id, employee_id, last_name, street_adress
+from employees ee left join adresses aa
 using (adress_id);
 
 select adress_id, employee_id, last_name, street_adress
@@ -114,6 +135,20 @@ select * from scores;
 select score_recid, test_score, grade
 from scores join grading
     on test_score between score_min and score_max;
+    
+select score_recid, test_score, grade
+from scores join grading
+    on (test_score between score_min and score_max and grade = 'A');
+    
+select score_recid, test_score, grade
+from scores join grading
+    on (test_score between score_min and score_max) and grade = 'A';
+    
+select score_recid, test_score, grade
+from scores join grading
+    on (test_score between score_min and score_max)
+    where
+    grade = 'A';
     
 /* self join */
 create table positions(
